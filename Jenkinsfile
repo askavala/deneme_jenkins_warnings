@@ -31,6 +31,7 @@ pipeline {
             steps {
                 echo "🔍 Updating Dashboard..."
                 recordIssues([
+                    skipBlames: true,
                     enabledForFailure: true,
                     tools: [
                         gcc(pattern: 'gcc_build.log', id: 'gcc-analysis', name: 'C Errors'),
@@ -49,4 +50,5 @@ pipeline {
         }
     }
 }
+
 
