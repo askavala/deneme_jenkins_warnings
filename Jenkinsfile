@@ -14,15 +14,18 @@ pipeline {
             }
         }
 
-        stage('Compile & Log') {
-            steps {
-                script {
-                    // Compiling the files pulled directly from GitHub
-                    sh 'gcc -Wall main.c -o program > gcc_build.log 2>&1 || true'
-                    sh 'javac -Xlint:all App.java > java_build.log 2>&1 || true'
+    stage('Compile & Log') {
+                steps {
+                    script {
+                        // ÖNCE: Docker imajının içine C derleyicisini (gcc) kuruyoruz
+                        sh 'apt-get update && apt-get install -y gcc'
+                        
+                        // SONRA: Kodlarımızı derliyoruz
+                        sh 'gcc -Wall main.c -o program > gcc_build.log 2>&1 || true'
+                        sh 'javac -Xlint:all App.java > java_build.log 2>&1 || true'
+                    }
                 }
             }
-        }
 
         stage('Quality Analysis') { 
             steps {
@@ -46,3 +49,4 @@ pipeline {
         }
     }
 }
+
